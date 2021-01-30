@@ -1,0 +1,96 @@
+/*шрифт*/
+@import url('../fonts/stylesheet.css');
+
+/*обнуление*/
+*,
+*:before,
+*:after {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: 'YS Text', Arial, Helvetica, sans-serif;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    background-color: #fbfbfb;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.container {
+    padding-top: 60px;
+    padding-bottom: 20px;
+}
+
+a, a:hover {
+    text-decoration: none;
+}
+
+/*.alert button a {*/
+/*    color: dimgrey;*/
+/*}*/
+
+/*.alert button a:hover {*/
+/*    color: red;*/
+/*}*/
+
+.form-outline .form-control {
+    background: white;
+}
+
+.comment {
+    display: flex;
+    align-items: flex-start;
+}
+
+.comment-body {
+    flex: 1;
+}
+
+.comment img.avatar {
+    max-width: 50px;
+    height: auto;
+    margin-right: 5px;
+}
+
+.comment-head {
+    display: block;
+    padding: .3rem .7rem .3rem .7rem;
+    background-color: #f8f0e9;
+    border-radius: .25rem;
+}
+
+.comment-text {
+    margin-left: 20px;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.comment-reply a {
+    font-size: 13px;
+    color: #8b8b8b;
+    margin-left: 20px;
+    /*text-decoration: underline;*/
+    /*text-underline-offset: .1rem;*/
+    transition: all .5s ease-out;
+}
+
+.comment-reply a:hover {
+    color: #0d5bdd;
+}
+
+li .badge {
+    padding-top: 5px;
+}
+

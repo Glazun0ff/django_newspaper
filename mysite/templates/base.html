@@ -1,40 +1,36 @@
+{% load static %}
+{% load static recaptcha3 %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Мой сайт{% endblock %}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style type="text/css">
-        a:hover {
-            text-decoration: none;
-        }
+    <title>{% block title %}Django News{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.0.0/mdb.min.css" rel="stylesheet"/>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
 
-        .alert button a {
-            color: dimgrey;
-        }
-
-        .alert button a:hover {
-            color: red;
-        }
-    </style>
+    {% recaptcha_init %}
+    {% recaptcha_ready action_name='homepage' %}
 </head>
 <body>
 
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-    <h5 class="my-0 mr-md-auto font-weight-normal">Glazun0ff</h5>
-    <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="/">Главная</a>
-        <a class="p-2 text-dark" href="/articles">Статьи</a>
-        <a class="p-2 text-dark" href="/weather">Погода</a>
-    </nav>
-    <a class="btn btn-outline-primary" href="#">Документация</a>
-</div>
+<main>
 
-{% block content %}
-    <div class="container">
-        <h2>Главная страница</h2>
-    </div>
-{% endblock %}
+    {% include 'include/navbar.html' %}
+
+    {% block content %}
+        <div class="container mt-4">
+            <h2>Главная страница</h2>
+        </div>
+    {% endblock %}
+
+</main>
+
+{% include 'include/footer.html' %}
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.0.0/mdb.min.js"></script>
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 
 </body>
 </html>

@@ -1,0 +1,16 @@
+{% for a in popular_articles %}
+    <div class="col-12 mb-2">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title"><a href="{{ a.get_absolute_url }}">{{ a.article_title }}</a></p>
+                <p class="card-text text-end">
+                    <small class="text-muted">
+                        <i class="far fa-calendar-alt"></i>&ensp;{{ a.created_at|date:"d.m.Y H:i" }}&ensp;
+                        <i class="far fa-eye"></i>&ensp;{{ a.views }}&ensp;
+                        <i class="far fa-comments"></i>&ensp;{{ a.number_comments }}
+                    </small>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endfor %}

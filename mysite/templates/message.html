@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Обратная связь{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-body px-4">
+
+                <form method="post" class="form-inline">{% csrf_token %}
+                    <div class="mb-2">
+                        <input type="email" name="email" class="form-control" placeholder="Ваш email" required>
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" name="message" class="form-control" placeholder="Сообщение" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">Отправить</button>
+                </form>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                            <strong>{{ message }}</strong>
+                            <button type="button" class="btn-close" data-mdb-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

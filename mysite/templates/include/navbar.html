@@ -1,0 +1,96 @@
+{% load article_tag %}
+<!-- Navbar -->
+<nav class="navbar fixed-top navbar-expand-md navbar-light bg-light">
+    {#<div class="container-fluid">#}
+    <div class="container-lg">
+        <a class="navbar-brand" href="/">Django News</a>
+
+        <!-- Toggle button -->
+        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
+                data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {#                <li class="nav-item">#}
+                {#                    <a class="nav-link" href="/">Главная</a>#}
+                {#                </li>#}
+                {#                <li class="nav-item">#}
+                {#                    <a class="nav-link" href="/articles">Статьи</a>#}
+                {#                </li>#}
+                <!-- Navbar dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-mdb-toggle="dropdown" aria-expanded="false">Рубрики</a>
+                    <!-- Dropdown menu -->
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {#                        <li><a class="dropdown-item" href="/">Все</a></li>#}
+                        {#                        <li><a class="dropdown-item" href="/category/software/">Software</a></li>#}
+                        {#                        <li><a class="dropdown-item" href="/category/hardware/">Hardware</a></li>#}
+                        {#                        <li><a class="dropdown-item" href="/category/videokarty/">Видеокарты</a></li>#}
+                        {#                        <li><a class="dropdown-item" href="/category/igry/">Игры</a></li>#}
+
+                        {% get_categories as categories %}
+                        {% for category in categories %}
+                            <li>
+                                <a class="dropdown-item" href="/category/{{ category.slug }}/">{{ category.title }}
+                                    <span class="badge bg-primary ms-1">{{ category.cnt }}</span></a>
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/weather/">Погода</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/message/">Обратная связь</a>
+                </li>
+
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-mdb-toggle="dropdown" aria-expanded="false">
+                            {% if user.first_name %}
+                                {{ user.first_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'account_logout' %}">Выход</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">Вход</a>
+                    </li>
+                {% endif %}
+
+            </ul>
+            <!-- Left links -->
+
+            <!-- Search form -->
+            <form class="d-flex input-group w-auto" action="{% url 'search' %}" method="get">
+                <div class="input-group rounded">
+                    <input class="form-control rounded"
+                           type="search"
+                           name="s"
+                           placeholder="Поиск..."
+                           aria-label="Search"
+                           aria-describedby="search-addon"/>
+                    <span class="input-group-text border-0" id="search-addon">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</nav>
+<!-- Navbar -->

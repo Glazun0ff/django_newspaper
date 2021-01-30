@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ article.article_title }}{% endblock %}
+
+{% block content %}
+
+    <div class="container mt-4 mb-4">
+        <div class="card">
+            <div class="card-body px-4">
+
+                {#<div class="text-start pb-0" style="color: #2283c2"><em>{{ article.category }}</em></div>#}
+                <div class="badge bg-primary mb-2">{{ article.category }}</div>
+                <h4>{{ article.article_title }}</h4>
+
+                <div class="text-end pb-2" style="color: #9b9b9b; font-size: 14px;">
+                    <i class="far fa-calendar-alt"></i>&ensp;{{ article.created_at|date:"d.m.Y H:i" }} &ensp;
+                    <i class="far fa-eye"></i>&ensp;{{ article.views }}&ensp;
+                    <i class="far fa-comments"></i>&ensp;{{ article.comments_set.count }}
+                    {#{% if article.was_published_recently %}Новая новость{% endif %}#}
+                </div>
+
+                {% if article.photo %}
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ article.photo.url }}" class="img-fluid" alt="{{ article.article_title }}">
+                    </div>
+                {% endif %}
+
+                <p>{{ article.article_text|safe }}</p>
+
+                <p class="text-center">
+                    {% if article.get_next_by_created_at %}
+                        <a href="{{ article.get_next_by_created_at.slug }}">&laquo; Следующая </a>
+                    {% endif %}
+                    {% if article.get_previous_by_created_at %}
+                        <a href="{{ article.get_previous_by_created_at.slug }}"> Предыдущая &raquo;</a>
+                    {% endif %}
+                </p>
+
+                {#        {% if latest_comments_list %}#}
+                {##}
+                {#            {% for c in latest_comments_list %}#}
+                {#                <strong>{{ c.author_name }}</strong>#}
+                {#                <p>{{ c.comment_text }}</p>#}
+                {#            {% endfor %}#}
+                {##}
+                {#        {% else %}#}
+                {#            Комментарии не найдены! Станьте первым ;)#}
+                {#        {% endif %}#}
+                {##}
+                {#        <hr>#}
+                {##}
+                {#        <form action="{% url 'articles:leave_comment' article.id %}" method="post">#}
+                {#            {% csrf_token %}#}
+                {#            <input type="text" class="form-control" required placeholder="Ваше имя" name="name"><br>#}
+                {#            <textarea name="text" class="form-control" required placeholder="Комментарий" rows="3"></textarea><br>#}
+                {#            <button type="submit" class="btn btn-primary">Оставить комментарий</button>#}
+                {#        </form>#}
+
+                <hr>
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-sm-12">
+
+                        <h5 class="text-start mt-2 mb-3">Комментарии ({{ article.comments_set.count }})</h5>
+                        {% for comment in article.get_comment %}
+
+                            <div class="comment mt-2">
+                                <img src="{% static 'img/avatar.jpg' %}" class="avatar img-fluid" alt="image">
+                                <div class="comment-body">
+                                    <div class="comment-head">
+                                        <strong>{{ comment.name }}</strong>
+                                        <small class="text-muted">{{ comment.datetime|date:"d.m.Y H:i" }}</small>
+                                    </div>
+                                    <div class="comment-text">
+                                        {{ comment.text }}
+                                    </div>
+                                    <div class="comment-reply">
+                                        <a href="#formComment"
+                                           onclick="addComment('{{ comment.name }}', '{{ comment.id }}')">
+                                            Ответить</a>
+                                    </div>
+
+                                    {% for comm in comment.comments_set.all %}
+                                        <div class="comment mt-2">
+                                            <img src="{% static 'img/avatar.jpg' %}" class="avatar img-fluid"
+                                                 alt="image">
+                                            <div class="comment-body">
+                                                <div class="comment-head">
+                                                    <strong>{{ comm.name }}</strong>
+                                                    <small class="text-muted">{{ comm.datetime|date:"d.m.Y H:i" }}</small>
+                                                </div>
+                                                <div class="comment-text">
+                                                    {{ comm.text }}
+                                                </div>
+                                                <div class="comment-reply">
+                                                    <a href="#formComment"
+                                                       onclick="addComment('{{ comm.name }}', '{{ comm.id }}')">Ответить</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                        {% if user.is_authenticated %}
+                            <h5 class="text-start mt-3">Оставить комментарий</h5>
+                            <form action="{% url 'add_comment' article.id %}" method="post" class="mt-4"
+                                  id="formComment">
+                                {% csrf_token %}
+                                <input type="hidden" name="parent" id="contactparent" value="">
+                                <div class="row mb-4">
+                                    <div class="col">
+                                        <div class="form-outline">
+                                            {#<input type="text" id="form4Example1" class="form-control"/>#}
+                                            {{ form.name }}
+                                            <label class="form-label" for="formExample1">Имя</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-outline">
+                                            {#<input type="email" id="form4Example2" class="form-control"/>#}
+                                            {{ form.email }}
+                                            <label class="form-label" for="formExample2">Email</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-outline mb-4">
+                                    {#<textarea class="form-control" id="form4Example3" rows="4"></textarea>#}
+                                    {{ form.text }}
+                                    <label class="form-label" for="contactcomment">Комментарий</label>
+                                </div>
+                                {{ form.captcha }}
+                                <button type="submit" class="btn btn-primary mb-4">Комментировать</button>
+                            </form>
+                        {% else %}
+                            <div class="alert alert-primary alert-dismissible fade show mt-2" role="alert">
+                                <strong>Авторизуйтесь на сайте, чтобы оставить свой комментарий</strong>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addComment(name, id) {
+            document.getElementById("contactparent").value = id;
+            document.getElementById("contactcomment").innerText = `${name}, `
+            document.getElementById("contactcomment").focus();
+        }
+
+    </script>
+
+{% endblock %}
