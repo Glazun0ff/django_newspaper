@@ -1,4 +1,4 @@
-# GitHub Actions deploy Django to AWS Elastic Beanstalk
+# Django Newspaper + GitHub Actions deploy Django to AWS Elastic Beanstalk
 
 
 
